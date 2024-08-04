@@ -1,0 +1,58 @@
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+
+</script>
+
+<template>
+  <header>
+    <div class="navResto">
+      <router-link style="text-decoration: none;margin: 50px;" :to="{ path: '/', query: { activeTab: 'home' } }" :class="{ 'nav-link-active': $route.query.activeTab === 'home' }">Tableau de Bord</router-link>
+      <router-link style="text-decoration: none;margin: 50px;" :to="{ path: '/plat', query: { activeTab: 'about' } }" :class="{ 'nav-link-active': $route.query.activeTab === 'about' }">Plats</router-link>
+      <router-link style="text-decoration: none;margin: 50px;" :to="{ path: '/contact', query: { activeTab: 'careers' } }" :class="{ 'nav-link-active': $route.query.activeTab === 'careers' }">Commmandes</router-link>
+      <router-link style="text-decoration: none;margin: 50px;" :to="{ path: '/graph', query: { activeTab: 'contact' } }" :class="{ 'nav-link-active': $route.query.activeTab === 'contact' }">Historique</router-link>
+    </div>
+  </header>
+
+  <RouterView></RouterView>
+</template>
+
+<style>
+.navResto {
+  background-color: aqua;
+  height: 50px;
+}
+
+.router-link {
+  margin-top: 2000px; /* Ajoute une marge supérieure pour déplacer vers le bas */
+}
+
+.router-link-exact-active {
+  text-decoration: none; /* Soulignement */
+  padding: 5px;
+  margin-top: 2000px;
+}
+
+.nav-link-active {
+  text-decoration: none;
+  animation: highlight 1s forwards; /* Applique l'animation */
+  transition: background-color 0.5s ease, color 0.5s ease; /* Applique la transition */
+  background-color: red;
+  padding: 5px;
+}
+
+@keyframes highlight {
+  from {
+    text-decoration: none;
+    background-color: red;
+    color: white; /* Couleur du texte */
+    border-radius: 15%;
+  }
+  to {
+    text-decoration: none;
+    background-color: burlywood; /* Changez initial à la couleur de fond d'origine */
+    color: black; /* Couleur du texte */
+    border-radius: 15%;
+  }
+}
+</style>
+

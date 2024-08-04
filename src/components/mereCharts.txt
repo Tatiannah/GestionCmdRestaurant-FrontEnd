@@ -1,0 +1,69 @@
+<template>
+  <div>
+      <div v-if="dataLoaded">
+    <span>Search Field:</span>&nbsp;  
+    <select v-model="searchField">
+      <option>nomCommandeur</option>
+      <option>nombreCommandes</option>
+    </select>
+    
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  
+    <span>Search Value: </span>
+    <input type="text" v-model="searchValue">
+  
+    <br>
+    <br>
+    <EasyDataTable
+      v-if="dataLoaded"
+      :headers="headers"
+      :items="items"
+      :search-field="searchField"
+      :search-value="searchValue"
+    />
+  </div>
+  <div v-else>
+    Loading...
+  </div>
+  </div>
+
+</template>
+
+<script lang="ts" setup>
+import { ref } from "vue";
+import type { Header, Item } from "vue3-easy-data-table";
+import axios from "axios";
+
+const searchField = ref("nomCommandeur");
+const searchValue = ref("");
+const dataLoaded = ref(false);
+
+const headers: Header[] = [];
+const items: Item[] = [];
+
+axios.get("http://localhost:3000/api/journals/NbCmdPerPerson")
+    .then(response => {
+        const dataX = response.data;
+  
+        // Pour chaque objet, récupérez les noms des clés et ajoutez-les au tableau "headers"
+        dataX.forEach(obj => {
+            Object.keys(obj).forEach(key => {
+                if (!headers.some(header => header.value === key)) {
+                    headers.push({ text: key, value: key });
+                }
+            });
+        });
+
+        console.log("headers", headers);
+  
+        // Assigner les données à la variable "items"
+        items.push(...dataX.map(item => ({ ...item })));
+
+        console.log("items", items);
+        
+        dataLoaded.value = true;
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+</script>
